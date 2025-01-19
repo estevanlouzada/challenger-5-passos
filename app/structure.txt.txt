@@ -1,0 +1,26 @@
+streamlit_project/
+│
+├── assets/                   # Imagens, arquivos estáticos e recursos
+│   ├── logo.png
+│   └── styles.css
+│
+├── data/                      # Dados do projeto (CSV, Excel, etc.)
+│   └── dataset.csv
+│
+├── src/                       # Código-fonte do projeto
+│   ├── __init__.py
+│   ├── pages/                 # Páginas do Streamlit (pode ser dividido em várias páginas)
+│   │   ├── home.py            # Página inicial
+│   │   ├── dashboard.py       # Página do dashboard
+│   │   └── analysis.py        # Página de análise de dados
+│   ├── components/            # Componentes reutilizáveis (gráficos, tabelas, etc.)
+│   │   ├── plot.py            # Funções para plotar gráficos
+│   │   └── table.py           # Funções para mostrar tabelas
+│   ├── utils/                 # Funções auxiliares e utilitárias
+│   │   ├── data_processing.py # Funções para processar os dados
+│   │   └── helpers.py         # Funções auxiliares gerais
+│   └── main.py                # Arquivo principal do Streamlit
+│
+├── requirements.txt           # Dependências do projeto (pode ser gerado com pip freeze)
+├── README.md                  # Documentação do projeto
+└── .gitignore                 # Arquivo para ignorar arquivos/diretórios no Git
