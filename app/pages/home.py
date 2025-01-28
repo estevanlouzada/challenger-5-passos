@@ -1,20 +1,8 @@
 import streamlit as st
 from components import header
-from utils import data_loader
-import requests
-import plotly.express as px 
-import pandas as pd 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from PIL import Image
 
-def filter_columns(df, filters: list): # adiciono no array o padrão que existe nas colunas e que não quero que tenha na saída final
-        selected_columns = [True] * len(df.columns)  # Inicializa todas as colunas como True
-        for index, column in enumerate(df.columns):
-            if any(filter in column for filter in filters): selected_columns[index] = False
-        return df[df.columns[selected_columns]]
+
 
 def render_home():
     header.render_header("Objetivo do Trabalho 🎯")
@@ -111,39 +99,3 @@ def render_home():
         st.image(image_header4, caption="Passos Mágicos", use_container_width=True)
     
     st.markdown("---")  # Separador visual
-    
-    with st.container():
-        st.markdown("### Nas estrelas do sucesso nossos preciosos diamantes:")
-        descritivo_evolutivo = '''
-            Avaliação de desenvolvimento educacional em medidas de variabilidade (variância e desvio padrão),
-            combinadas com as medidas de posicionamento (média, mediana e modal), resultando a nota padronizada
-                Quartzo - 2,405 e 5,506 - Média subtraido de um desvio padrão
-                Ágata - intervalo a cima de 5,506 até 6.868 valor da média
-                Ametista - 6,868 at;e 8,23 média mais um desvio padrão 
-                Topázio - 8,23 limite anterior ao máximo '''
-        st.write(descritivo_evolutivo)
-    
-    
-    st.markdown("---")  # Separador visual
-
-    with st.container():
-        st.title('Dash de acompanhamento - ORG Alunos - Dash ')
-        df = data_loader.load_data('')
-        df_2020_21 = filter_columns(df, ['2022'])
-        dados = df_2020_21['INSTITUICAO_ENSINO_ALUNO_2020'].value_counts()
-
-        dtpedras = df_2020_21['PEDRA_2021'].value_counts()
-        dtpedras_ano_passado = df_2020_21['PEDRA_2020'].value_counts()
-
-        ametista, agata, quartzo, topazio , outro = dtpedras
-        ametista2, agata2, quartzo2, topazio2 , outro2 = dtpedras_ano_passado
-
-    
-        col1, col2, col3, col4 = st.columns(4)
-
-        col1.metric(label="Ametista :gem:", value=f"{ametista}", delta=f"{ametista - ametista2} neste ano",border=True )
-        col2.metric("Agata :gem:", f"{agata}", f"{agata - agata2} neste ano",border=True)
-        col3.metric("Quartzo :gem:", f"{quartzo}", f"{quartzo - quartzo2} neste ano",border=True)
-        col4.metric("Topazio :gem:", f"{topazio}", f"{topazio - topazio2} neste ano",border=True)
-
-    st.dataframe(dados)
