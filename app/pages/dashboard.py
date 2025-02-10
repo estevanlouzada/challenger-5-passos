@@ -16,12 +16,20 @@ def render_dashboard():
             "Breve descrição do que cada parte do dashboard representa (indicadores, filtros, gráficos)."
         )
 
-    with tab2:
-        st.header("Interatividade")
-        st.write(
-            "Demonstração das funcionalidades interativas (filtros, drill down, etc)."
-        )
-        # Configuração inicial da página
+    # Primeira linha: Métricas principais
+    st.markdown("## Dashboard de Análise de Dados")
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric(label="Vendas Totais", value="R$ 200K", delta="+5%")
+    col2.metric(label="Novos Usuários", value="1.2K", delta="+12%")
+    col3.metric(label="Taxa de Conversão", value="3.4%", delta="+0.5%")
+    col4.metric(label="Churn", value="2.8%", delta="-0.3%")
+
+    # Segunda linha: Três gráficos
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        
         st.title("Indicador de Ponto de Virada por Ano")
 
         # Dados fornecidos
@@ -58,6 +66,8 @@ def render_dashboard():
         # Exibir gráfico no Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
+    with col2:
+        
         st.title("Quantidade de Bolsistas x Escola Pública")
 
         # Estruturação dos dados em formato wide
@@ -76,21 +86,7 @@ def render_dashboard():
             use_container_width=True
         )
 
-        # Explicação adicional
-        st.markdown("""
-        **Observações:**
-        1. O gráfico usa as colunas como categorias automaticamente
-        2. As cores são atribuídas automaticamente pelo Streamlit
-        3. Para mais personalização, recomendo usar Plotly
-        """)
-
-
-    with tab3:
-        st.header("Insights")
-        st.write(
-            "Resumo dos principais insights que o dashboard fornece para ajudar na tomada de decisões."
-        )
-
+    with col3:
         st.title("Quantidade de Alunos nas Fases por Ano")
 
         # Estruturar os dados
@@ -130,7 +126,11 @@ def render_dashboard():
         # Exibir no Streamlit
         st.plotly_chart(fig, use_container_width=True)
 
-        # Título do aplicativo
+    # Terceira linha: Dois gráficos
+    col1, col2 = st.columns(2)
+
+    with col1:
+                # Título do aplicativo
         st.title('Quantidade de Alunos por Categoria (Pedra)/Ano')
 
         # Criar dados de exemplo
@@ -166,4 +166,65 @@ def render_dashboard():
 
         # Exibir gráfico no Streamlit
         st.plotly_chart(fig1, use_container_width=True)
+
+    with col2:
+        def plot_media_indicadores(dfs, anos):
+            # DataFrame para armazenar os dados consolidados
+            dados_consolidados = []
+
+            for df, ano in zip(dfs, anos):
+                # Calcula a média para cada indicador
+                medias = df.mean()
+                for indicador, media in medias.items():
+                    dados_consolidados.append({"Ano": ano, "Indicador": indicador, "Média": media})
+
+            # Cria um DataFrame com as informações consolidadas
+            df_consolidado = pd.DataFrame(dados_consolidados)
+
+            # Plot com Plotly
+            fig = px.line(
+                df_consolidado,
+                x="Ano",
+                y="Média",
+                color="Indicador",
+                markers=True,
+                title="Média dos Indicadores por Ano"
+            )
+            fig.update_traces(line=dict(width=2))
+            fig.show()
+
+                    # Exibir gráfico no Streamlit
+            st.plotly_chart(fig, use_container_width=True)
+
+        # Simulação de DataFrames com os dados fictícios
+        df_2020 = pd.DataFrame({'INDE': [10000.0, 9500.5, 8900.2], 'IEG': [10500.3, 10200.4, 10900.1], 'IDA': [5300.4, 5400.6, 5200.0]})
+        df_2021 = pd.DataFrame({'INDE': [9000.2, 9400.1, 9300.5], 'IEG': [10700.5, 10200.4, 10100.3], 'IDA': [5100.4, 5000.2, 5200.1]})
+        df_2022 = pd.DataFrame({'INDE': [8000.4, 8500.6, 8700.3], 'IEG': [9600.7, 9700.4, 9500.2], 'IDA': [4900.5, 4700.1, 4800.3]})
+
+        # Chama a função com os DataFrames
+        plot_media_indicadores([df_2020, df_2021, df_2022], [2020, 2021, 2022])
+
+    with tab2:
+        st.header("Interatividade")
+        st.write(
+            "Demonstração das funcionalidades interativas (filtros, drill down, etc)."
+        )
+        # Configuração inicial da página
+
+        # Explicação adicional
+        st.markdown("""
+        **Observações:**
+        1. O gráfico usa as colunas como categorias automaticamente
+        2. As cores são atribuídas automaticamente pelo Streamlit
+        3. Para mais personalização, recomendo usar Plotly
+        """)
+
+
+    with tab3:
+        st.header("Insights")
+        st.write(
+            "Resumo dos principais insights que o dashboard fornece para ajudar na tomada de decisões."
+        )
+
+
 
