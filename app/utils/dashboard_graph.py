@@ -62,7 +62,7 @@ class DataVisualizer:
         #     plot_bgcolor='rgba(0,0,0,0)',
         #     title_font_size=20
         # )
-        st.markdown("#### **Alunos por Ano e Categoria**",
+        st.markdown("#### **Indicador Ponto de Virada por Ano**",
         unsafe_allow_html=True)
         # Exibir gráfico no Streamlit
         st.plotly_chart(fig, use_container_width=False)
@@ -106,7 +106,7 @@ class DataVisualizer:
         }
         df = pd.DataFrame(data).set_index('Ano')
 
-        st.markdown("#### **Alunos por Ano**",
+        st.markdown("#### **Quantidade de Bolsas X Escola Pública**",
         unsafe_allow_html=True)
         # Criar o gráfico
         st.bar_chart(
@@ -171,7 +171,7 @@ class DataVisualizer:
             legend_title_text='Ano'
         )
 
-        st.markdown("#### **Alunos por Fase e Ano**",
+        st.markdown("#### **Alunos nas Fases por Ano**",
         unsafe_allow_html=True)
         # Exibir no Streamlit
         st.plotly_chart(fig, use_container_width=True)
@@ -276,7 +276,7 @@ class DataVisualizer:
             yaxis_range=[0, 800],
             plot_bgcolor='rgba(0,0,0,0)'
         )
-        st.markdown("#### **Distribuição de Alunos por Ano e Categoria**",
+        st.markdown("#### **Quantidade de Alunos por Categoria(Pedra)/Ano**",
         unsafe_allow_html=True)
         # Exibir gráfico no Streamlit
         st.plotly_chart(fig1, use_container_width=True)
