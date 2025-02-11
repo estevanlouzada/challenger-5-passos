@@ -28,7 +28,7 @@ def load_data_2020():
       
       file_path = 'data/pede_2020.csv'
       pd.set_option('display.max_columns', None)
-      df = pd.read_csv(file_path, delimiter=',')
+      df = pd.read_csv(file_path, delimiter=';')
       return df
     
   except FileNotFoundError:
@@ -39,7 +39,7 @@ def load_data_2021():
       
       file_path = 'data/pede_2021.csv'
       pd.set_option('display.max_columns', None)
-      df = pd.read_csv(file_path, delimiter=',')
+      df = pd.read_csv(file_path, delimiter=';')
       return df
     
   except FileNotFoundError:
@@ -50,7 +50,7 @@ def load_data_2022():
       
       file_path = 'data/pede_2022.csv'
       pd.set_option('display.max_columns', None)
-      df = pd.read_csv(file_path, delimiter=',')
+      df = pd.read_csv(file_path, delimiter=';')
       return df
     
   except FileNotFoundError:
