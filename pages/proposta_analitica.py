@@ -18,7 +18,7 @@ def filter_columns(df, filters: list): # adiciono no array o padrão que existe 
 
 def render_proposta_analitica():
     header.render_header("Proposta Analítica")
-    tab2 , tab3, tab4 = st.tabs(["Indicadores", "Dashboard", "Storyteling"])
+    tab2 , tab4 = st.tabs(["Indicadores", "Storyteling"])
 
 
     with tab2:
@@ -145,10 +145,6 @@ def render_proposta_analitica():
                 st.markdown('''- <b> -Índice de Progresso Pessoal:IPP  </b>, Esse índice desempenha um papel crucial no desenvolvimento dos alunos. No entanto, a média geral apresenta certa instabilidade, possivelmente devido à presença de novos alunos que ainda estão aprimorando suas habilidades sociais e a capacidade de lidar com desafios mais complexos.''', unsafe_allow_html=True)
 
 
-    with tab3:
-        st.header("Dashboard Interativo:")
-        st.write("Um link ou embedding do dashboard que você criou para exibir os dados de forma interativa. Caso seja possível, adicione filtros para visualização por diferentes métricas (ano, área de estudo, faixa etária, etc).")
-        
     with tab4:
         
         vulnerabilidade_embu_guacu = '''

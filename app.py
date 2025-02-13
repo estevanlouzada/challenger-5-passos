@@ -27,14 +27,6 @@ def bootstrap():
     elif menu_selection == "Conclusao":
         conclusao.render_conclusao()
     
-    st.markdown("**\n \n Integrantes do Grupo 49**\
-                    \n **Estevan Louzada Souza**\
-    \n estevan.louzada@gmail.com\
-    \n\n **Amanda Beatriz da Silva**\
-    \n amanda.beatriz@gmail.com\
-    \
-    \n\n **Gabriel Ramalho Abahit**\
-    \n gabahit@hotmail.com")
 
 
 bootstrap()
