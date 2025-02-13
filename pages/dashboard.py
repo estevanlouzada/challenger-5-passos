@@ -156,24 +156,55 @@ def render_dashboard():
             values = [player_data[cat] for cat in categories]
             fig = go.Figure()
             #adiciona o grafico de radar 
+            # Adicionando o gráfico de radar com gradiente de cores
             fig.add_trace(go.Scatterpolar(
-                r = values,
-                theta= categories, 
+                r=values,
+                theta=categories,
                 fill='toself',
+                fillcolor='rgba(0, 176, 246, 0.2)',  # Azul transparente para preenchimento
+                line=dict(
+                    color='rgb(0, 176, 246)',  # Azul mais forte para a linha
+                    width=2
+                ),
                 name=player_data["NOME"]
             ))
+    
+            # Atualizando o layout com melhorias visuais
             fig.update_layout(
-                polar=dict(
-                    radialaxis=dict(
-                        visible=True,
-                        range=[0,10]
-                        #escala maxima dos atributos
-                    )
-                ),
-                showlegend=False
+                 polar=dict(
+                     radialaxis=dict(
+                         visible=True,
+                         range=[0, 10],
+                         tickfont=dict(size=10),
+                         gridcolor='rgba(128, 128, 128, 0.3)',  # Grade suave
+                         showline=True,
+                         linecolor='rgba(128, 128, 128, 0.3)',
+                     ),
+                     angularaxis=dict(
+                         tickfont=dict(size=12, color='rgba(128, 128, 128, 0.8)'),
+                         linecolor='rgba(128, 128, 128, 0.3)',
+                         gridcolor='rgba(128, 128, 128, 0.3)',
+                     ),
+                     bgcolor='rgba(0, 0, 0, 0)',  # Fundo transparente
+                 ),
+                 showlegend=False,
+                 paper_bgcolor='rgba(0, 0, 0, 0)',  # Fundo do papel transparente
+                 margin=dict(l=80, r=80, t=20, b=80),  # Margens ajustadas
             )
+
+            # Adicionando um título opcional
+            fig.update_layout(
+                 title=dict(
+                     text=f'Perfil do Aluno: {player_data["NOME"]}',
+                     y=0.95,
+                     x=0.5,
+                     xanchor='center',
+                     yanchor='top',
+                     font=dict(size=16)
+                 )
+            )
+            #exibir o radar 
             return fig
-        #exibir o radar 
 
         
         st.subheader(f"Radar de Desempenho: {player_data["NOME"] }")
