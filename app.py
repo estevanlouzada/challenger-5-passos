@@ -1,5 +1,5 @@
 import streamlit as st
-from pages import home, proposta_analitica, proposta_preditiva, dashboard, conclusao
+from pages import home, proposta_analitica, dashboard, conclusao
 from components import sidebar
 from utils import config
 
@@ -20,9 +20,6 @@ def bootstrap():
 
     elif menu_selection == "Proposta Analítica":
          proposta_analitica.render_proposta_analitica()
-    
-    elif menu_selection == "Proposta Preditiva":
-        proposta_preditiva.render_proposta_preditiva()
 
     elif menu_selection == "Dashboard":
        dashboard.render_dashboard()

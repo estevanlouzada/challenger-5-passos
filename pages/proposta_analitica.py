@@ -18,48 +18,10 @@ def filter_columns(df, filters: list): # adiciono no array o padrão que existe 
 
 def render_proposta_analitica():
     header.render_header("Proposta Analítica")
-    tab1, tab2 , tab3, tab4 = st.tabs(["Visao", "Indicadores", "Dashboard", "Storyteling"])
-
-    with tab1:
-        st.header("Visão geral da análise")
-        st.write("Introdução explicando como a análise foi realizada.")
-        with st.container():
-            st.markdown("### Nas estrelas do sucesso nossos preciosos diamantes:")
-            descritivo_evolutivo = '''
-                Avaliação de desenvolvimento educacional em medidas de variabilidade (variância e desvio padrão),
-                combinadas com as medidas de posicionamento (média, mediana e modal), resultando a nota padronizada
-                    Quartzo - 2,405 e 5,506 - Média subtraido de um desvio padrão
-                    Ágata - intervalo a cima de 5,506 até 6.868 valor da média
-                    Ametista - 6,868 at;e 8,23 média mais um desvio padrão 
-                    Topázio - 8,23 limite anterior ao máximo '''
-            st.write(descritivo_evolutivo)
-        
-        
-            st.markdown("---")  # Separador visual
-        with st.container():
-            st.title('Dash de acompanhamento - ORG Alunos - Dash ')
-            df = data_loader.load_data('')
-            df_2020_21 = filter_columns(df, ['2022'])
-            dados = df_2020_21['INSTITUICAO_ENSINO_ALUNO_2020'].value_counts()
-
-            dtpedras = df_2020_21['PEDRA_2021'].value_counts()
-            dtpedras_ano_passado = df_2020_21['PEDRA_2020'].value_counts()
-
-            ametista, agata, quartzo, topazio , outro = dtpedras
-            ametista2, agata2, quartzo2, topazio2 , outro2 = dtpedras_ano_passado
+    tab2 , tab3, tab4 = st.tabs(["Indicadores", "Dashboard", "Storyteling"])
 
 
-            col1, col2, col3, col4 = st.columns(4)
-
-            col1.metric(label="Ametista :gem:", value=f"{ametista}", delta=f"{ametista - ametista2} neste ano",border=True )
-            col2.metric("Agata :gem:", f"{agata}", f"{agata - agata2} neste ano",border=True)
-            col3.metric("Quartzo :gem:", f"{quartzo}", f"{quartzo - quartzo2} neste ano",border=True)
-            col4.metric("Topazio :gem:", f"{topazio}", f"{topazio - topazio2} neste ano",border=True)
-
-        st.dataframe(dados)
     with tab2:
-        st.header("Indicadores de Desenvolvimento:")
-        st.write("Descrição dos principais indicadores que foram analisados, como notas, evolução acadêmica, taxas de sucesso, etc.")
 
         # Criando os dados da tabela
         data = {
@@ -137,7 +99,7 @@ def render_proposta_analitica():
         academico, tab_psico, tab_psicopeda  = st.tabs([ "Desempenho Academico", "Desempenho Psicosocial", "Desempenho Psicopedagógico"])
         # Desempenho Acadêmico 
         with academico:
-            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento acadêmico dos alunos por ano que são os indicadores IEG, IDA, IAN.''')
+            st.markdown('''O gráfico abaixo fornece uma visão geral sobre o progresso acadêmico dos alunos por ano que são os indicadores IEG, IDA, IAN.''')
             fig2 = go.Figure()
             for column in ['IEG', 'IDA', 'IAN']:
                 fig2.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
@@ -147,14 +109,14 @@ def render_proposta_analitica():
             with col1:
                 st.plotly_chart(fig2, use_container_width=True)
             with col2:
-                st.markdown('''- <b>IEG (Índice do Engajamento Global)</b>, ao analisar esse gráfico vi que teve uma queda considerável do ano de 2020 para 2021 e em 2022 houve uma grande superação demonstrando que em 2022 houve muito mais participação dos alunos.''', unsafe_allow_html=True)
-                st.markdown('''- <b>IDA (Índice do Desenvolvimento Acadêmico)</b>, teve uma queda nos brusca nos dois primeiros anos apontados nessa análise, e no último ano houve uma recuperação mas não retornou ao seu nível normal do primeiro ano, demonstrando que em questão de notas, frequência e participação ainda temos um problema.''', unsafe_allow_html=True)
-                st.markdown('''- <b>IAN (Índice do Acompanhamento Nutricional)</b>, Teve uma queda constante não demonstrando nenhum pico de retorno a seus níveis normais de 2020 pra cá, demonstrando assim um problema com nutrição e bem estar dos alunos.''', unsafe_allow_html=True)
+                st.markdown('''- <b>- Índice do Acompanhamento Nutricional:IAN </b>, Apresentou uma queda contínua desde 2020, sem sinais de recuperação aos níveis anteriores. Esse comportamento sugere um desafio persistente relacionado à nutrição e ao bem-estar dos alunos.''', unsafe_allow_html=True)
+                st.markdown('''- <b>- Índice do Engajamento Global:IEG </b>, A análise do gráfico revela uma redução significativa entre 2020 e 2021. No entanto, em 2022, houve uma recuperação expressiva, indicando um aumento considerável na participação dos alunos nesse período.''', unsafe_allow_html=True)
+                st.markdown('''- <b>- Índice do Desenvolvimento Acadêmico:IDA </b>, Nos dois primeiros anos analisados, houve uma queda acentuada, e embora no último ano tenha ocorrido uma melhora, o índice ainda não retornou ao patamar inicial. Isso indica que questões como notas, frequência e participação ainda precisam de atenção.''', unsafe_allow_html=True)
 
 
         # desempenho psicopedagogico
         with tab_psico:
-            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento Psicossocial dos alunos por ano que são os indicadores IAA e IPS.''')
+            st.markdown('''O gráfico abaixo fornece uma visão geral sobre o progresso Psicossocial dos alunos por ano que são os indicadores IAA e IPS.''')
             fig3 = go.Figure()
             for column in ['IAA', 'IPS']:
                 fig3.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
@@ -164,12 +126,12 @@ def render_proposta_analitica():
             with col3:
                 st.plotly_chart(fig3, use_container_width=True)                
             with col4:
-                st.markdown('''- <b>IAA (Índice de Atendimento e Acompanhamento)</b>, em questão de atendimento e acompanhamento dos alunos temos um índice bem estável, mesmo com uma queda mínima no decoorer desses 3 últimos anos. ''', unsafe_allow_html=True)
-                st.markdown('''- <b>IPS (Índice de Participação Social)</b>, o estimulo a participação de projetos comunitários tem crescido aos poucos, mas é um ponto positivo mostrando que a passos mágicos tem incentivado e promovido a criação mais cidadãos de bem.''', unsafe_allow_html=True)
+                st.markdown('''- <b>- Índice de Participação Social:IPS </b>, O envolvimento dos alunos em projetos comunitários tem apresentado um crescimento gradual. Esse avanço, mesmo que lento, é positivo, pois demonstra um incentivo contínuo à formação de cidadãos mais engajados e conscientes.''', unsafe_allow_html=True)                
+                st.markdown('''- <b>- Índice de Atendimento e Acompanhamento:IAA </b>, A prestação de suporte e acompanhamento aos alunos tem se mantido relativamente estável ao longo dos últimos três anos, apesar de uma leve redução nesse período.''', unsafe_allow_html=True)
 
         # Desempenho Psicossocial
         with tab_psicopeda:
-            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento Psicopedagógico dos alunos por ano que são os indicadores IPP e IPV.''')
+            st.markdown('''O gráfico abaixo fornece uma visão geral sobre o progresso Psicopedagógico dos alunos por ano que são os indicadores IPP e IPV.''')
             fig4 = go.Figure()
             for column in ['IPP', 'IPV']:
                 fig4.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
@@ -179,8 +141,8 @@ def render_proposta_analitica():
             with col5:
                 st.plotly_chart(fig4, use_container_width=True)                
             with col6:
-                st.markdown('''- <b>IPP (Índice de Progresso Pessoal)</b>, esse índice é muito importante apesar de um resultado não muito estável quando olhamos uma média de todos os alunos, aqui podemos considerar que tem alunos novos que ainda não desenvolveram muito suas skills sociais e resiliência em algum cenário que necessita de resolver problemas mais complexos.''', unsafe_allow_html=True)
-                st.markdown('''- <b>IPV (Índice de Permanência e Valorização)</b>, esse índice é um feedback e o retorno está muito bom, ele se manteve bem estável ali na casa do 7,2 a 7,4.''', unsafe_allow_html=True)
+                st.markdown('''- <b> -Índice de Permanência e Valorização:IPV</b>, Esse indicador reflete a retenção e valorização dos alunos no ambiente escolar. Os resultados têm sido positivos, mantendo-se estáveis na faixa que apresentam o que sugere um bom nível de satisfação e continuidade na jornada educacional.''', unsafe_allow_html=True)
+                st.markdown('''- <b> -Índice de Progresso Pessoal:IPP  </b>, Esse índice desempenha um papel crucial no desenvolvimento dos alunos. No entanto, a média geral apresenta certa instabilidade, possivelmente devido à presença de novos alunos que ainda estão aprimorando suas habilidades sociais e a capacidade de lidar com desafios mais complexos.''', unsafe_allow_html=True)
 
 
     with tab3:

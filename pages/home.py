@@ -9,11 +9,10 @@ def render_home():
     st.markdown("O **Datathon** é uma oportunidade de aplicar conhecimentos em ciência de dados para resolver problemas reais e impactar positivamente a sociedade. Neste contexto, o nosso projeto se concentra na **ONG Passos Mágicos**, uma instituição que atua na promoção da **educação** como ferramenta para transformar a vida de crianças e jovens em situação de vulnerabilidade social.")
     st.markdown("---")
     st.markdown(" ### Objetivo Principal:")
-    st.markdown("Através deste trabalho, buscamos utilizar os **dados educacionais e socioeconômicos** fornecidos pela ONG para **analisar** e **criar soluções preditivas** que possam ajudar a **Passos Mágicos** a aprimorar seu impacto social.")
+    st.markdown("Através deste trabalho, buscamos utilizar os **dados educacionais e socioeconômicos** fornecidos pela ONG para **analisar** e **criar soluções ** que possam ajudar a **Passos Mágicos** a aprimorar seu impacto social.")
     st.markdown("A proposta é:")
     st.markdown("- **Entender** melhor a evolução do desempenho escolar dos estudantes atendidos")
     st.markdown("- **Identificar** padrões e insights que possam apoiar a ONG em suas decisões estratégicas")
-    st.markdown(" - **Gerar soluções preditivas** que ajudem a ONG a antecipar necessidades e otimizar seus esforços")
     st.markdown("A aplicação de dados permitirá que a ONG tenha uma visão mais clara do impacto de suas ações, possibilitando decisões mais informadas e estratégias mais eficazes para alcançar seus objetivos sociais.")
     st.markdown("---")
 
