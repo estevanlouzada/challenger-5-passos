@@ -41,7 +41,7 @@ def render_home():
 
     # Contêiner para a Introdução e Missão da ONG
     with st.container():
-      st.markdown("### Nossa Missão")
+      st.markdown("### A Missão da Passos Mágicos")
       st.markdown(
             f"""
             A Passos Mágicos é uma instituição sem fins lucrativos dedicada a transformar vidas através da educação.
@@ -59,7 +59,7 @@ def render_home():
 
     # Contêiner para o Como Trabalhamos
     with st.container():
-      st.markdown("### Como Trabalhamos")
+      st.markdown("### Como a Passos Mágicos trabalha.")
       st.markdown(
           """
           Utilizamos uma metodologia multifacetada e própria, integrando psicologia e psicopedagogia,
@@ -82,7 +82,7 @@ def render_home():
 
     # Contêiner para o Impacto na Comunidade
     with st.container():
-      st.markdown("### Nosso Impacto na Comunidade")
+      st.markdown("### Impacto da Passos Mágicos na Comunidade")
       st.markdown(
           """
           A Passos Mágicos atende à comunidade de Embu-Guaçu, SP, uma cidade com cerca de 66.970 habitantes.

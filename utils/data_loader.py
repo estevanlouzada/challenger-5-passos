@@ -55,5 +55,16 @@ def load_data_2022():
     
   except FileNotFoundError:
     return None
+  
+def load_data_tot():
+  try:
+      
+      file_path = 'data/pede_total.csv'
+      pd.set_option('display.max_columns', None)
+      df = pd.read_csv(file_path, delimiter=';')
+      return df
+    
+  except FileNotFoundError:
+    return None
     
 # funcoes que realiza tratamento dos dados...

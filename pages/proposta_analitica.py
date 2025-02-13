@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import plotly.graph_objs as go
 
 
 def filter_columns(df, filters: list): # adiciono no array o padrão que existe nas colunas e que não quero que tenha na saída final
@@ -57,8 +58,130 @@ def render_proposta_analitica():
 
         st.dataframe(dados)
     with tab2:
-        st.header("Indicadores de Performance:")
+        st.header("Indicadores de Desenvolvimento:")
         st.write("Descrição dos principais indicadores que foram analisados, como notas, evolução acadêmica, taxas de sucesso, etc.")
+
+        # Criando os dados da tabela
+        data = {
+            "Dimensão": [
+                "DIMENSÃO ACADÊMICA", "DIMENSÃO ACADÊMICA", "DIMENSÃO ACADÊMICA",
+                "DIMENSÃO PSICOSSOCIAL", "DIMENSÃO PSICOSSOCIAL",
+                "DIMENSÃO PSICOPEDAGÓGICA", "DIMENSÃO PSICOPEDAGÓGICA"
+            ],
+            "Indicador": ["IAN", "IDA", "IEG", "IAA", "IPS", "IPP", "IPV"],
+            "Descrição": [
+                "Indicador de adequação de nível", "Indicador de desempenho acadêmico", 
+                "Indicador de Engajamento", "Indicador de Autoavaliação",
+                "Indicador Psicossocial", "Indicador Psicopedagógico",
+                "Indicador do Ponto de Virada"
+            ],
+            "Origem": [
+                "Registros administrativos", "Notas Provas PM e Média geral Universitária",
+                "Registros de entrega de lição de casa e de voluntariado",
+                "Questionário de Autoavaliação individual",
+                "Questionário individual de avaliação das psicólogas",
+                "Questionário individual de avaliação dos pedagogos e professores",
+                "Questionário individual de avaliação dos pedagogos e professores"
+            ]
+        }
+
+        # Convertendo para DataFrame
+        df = pd.DataFrame(data)
+
+        # Exibir título
+        st.markdown("## 📊 Índice de Desenvolvimento Educacional (INDE)")
+
+        # Criando a tabela com formatação
+        st.markdown(
+            """
+            <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 10px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #0D6EFD;
+                color: white;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Adicionando setas como HTML na coluna "Indicador"
+        df["Indicador"] = df["Indicador"].apply(lambda x: f"⬆️ {x}")
+
+        # Exibindo a tabela formatada
+        st.write(df, unsafe_allow_html=True)
+
+
+
+        #load
+        df_tot = data_loader.load_data_tot()
+
+        select = ['NOME', 'INDE', 'INDE_CONCEITO', 'PEDRA',  'IAA', 'IEG', 'IPS', 'IDA', 'IPP',
+       'IPV', 'IAN', 'ANO', 'FASE']
+        select_desenvolvimento_psicossocial = ['IAA', 'IPS']
+        select_desenvolvimento_psicopedagogico = ['IPP', 'IPV']
+        select_desenvolvimento_academico = ['IEG', 'IDA', 'IAN']
+        df_anos = df_tot[select]
+        # Agrupando por ANO e calculando a média dos indicadores
+        df_consolidado = df_anos.groupby("ANO")[["IAA", "IEG", "IPS", "IDA", "IPP", "IPV", "IAN"]].mean().reset_index()
+
+
+        academico, tab_psico, tab_psicopeda  = st.tabs([ "Desempenho Academico", "Desempenho Psicosocial", "Desempenho Psicopedagógico"])
+        # Desempenho Acadêmico 
+        with academico:
+            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento acadêmico dos alunos por ano que são os indicadores IEG, IDA, IAN.''')
+            fig2 = go.Figure()
+            for column in ['IEG', 'IDA', 'IAN']:
+                fig2.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
+            fig2.update_layout(title='Média dos indicadores de desempenho IEG, IDA e IAN por ano', xaxis_title='Ano', yaxis_title='Média', legend_title='Indicadores', height=600)
+            fig2.update_xaxes(tickmode='linear', tick0=df_consolidado['ANO'].min(), dtick=1)
+            col1, col2 = st.columns([2,1])
+            with col1:
+                st.plotly_chart(fig2, use_container_width=True)
+            with col2:
+                st.markdown('''- <b>IEG (Índice do Engajamento Global)</b>, ao analisar esse gráfico vi que teve uma queda considerável do ano de 2020 para 2021 e em 2022 houve uma grande superação demonstrando que em 2022 houve muito mais participação dos alunos.''', unsafe_allow_html=True)
+                st.markdown('''- <b>IDA (Índice do Desenvolvimento Acadêmico)</b>, teve uma queda nos brusca nos dois primeiros anos apontados nessa análise, e no último ano houve uma recuperação mas não retornou ao seu nível normal do primeiro ano, demonstrando que em questão de notas, frequência e participação ainda temos um problema.''', unsafe_allow_html=True)
+                st.markdown('''- <b>IAN (Índice do Acompanhamento Nutricional)</b>, Teve uma queda constante não demonstrando nenhum pico de retorno a seus níveis normais de 2020 pra cá, demonstrando assim um problema com nutrição e bem estar dos alunos.''', unsafe_allow_html=True)
+
+
+        # desempenho psicopedagogico
+        with tab_psico:
+            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento Psicossocial dos alunos por ano que são os indicadores IAA e IPS.''')
+            fig3 = go.Figure()
+            for column in ['IAA', 'IPS']:
+                fig3.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
+            fig3.update_layout(title='Média dos indicadores de desempenho IAA e IPS por ano', xaxis_title='ANO', yaxis_title='Média', legend_title='Indicadores', height=600)
+            fig3.update_xaxes(tickmode='linear', tick0=df_consolidado['ANO'].min(), dtick=1)
+            col3, col4 = st.columns([2,1])
+            with col3:
+                st.plotly_chart(fig3, use_container_width=True)                
+            with col4:
+                st.markdown('''- <b>IAA (Índice de Atendimento e Acompanhamento)</b>, em questão de atendimento e acompanhamento dos alunos temos um índice bem estável, mesmo com uma queda mínima no decoorer desses 3 últimos anos. ''', unsafe_allow_html=True)
+                st.markdown('''- <b>IPS (Índice de Participação Social)</b>, o estimulo a participação de projetos comunitários tem crescido aos poucos, mas é um ponto positivo mostrando que a passos mágicos tem incentivado e promovido a criação mais cidadãos de bem.''', unsafe_allow_html=True)
+
+        # Desempenho Psicossocial
+        with tab_psicopeda:
+            st.markdown('''O gráfico abaixo traz um overview quando ao desenvolvimento Psicopedagógico dos alunos por ano que são os indicadores IPP e IPV.''')
+            fig4 = go.Figure()
+            for column in ['IPP', 'IPV']:
+                fig4.add_trace(go.Scatter(x=df_consolidado['ANO'], y=df_consolidado[column], mode='lines', name=column))
+            fig4.update_layout(title='Média dos indicadores de desempenho IPP e IPV por ano', xaxis_title='ANO', yaxis_title='Média', legend_title='Indicadores', height=600)
+            fig4.update_xaxes(tickmode='linear', tick0=df_consolidado['ANO'].min(), dtick=1)
+            col5, col6 = st.columns([2,1])
+            with col5:
+                st.plotly_chart(fig4, use_container_width=True)                
+            with col6:
+                st.markdown('''- <b>IPP (Índice de Progresso Pessoal)</b>, esse índice é muito importante apesar de um resultado não muito estável quando olhamos uma média de todos os alunos, aqui podemos considerar que tem alunos novos que ainda não desenvolveram muito suas skills sociais e resiliência em algum cenário que necessita de resolver problemas mais complexos.''', unsafe_allow_html=True)
+                st.markdown('''- <b>IPV (Índice de Permanência e Valorização)</b>, esse índice é um feedback e o retorno está muito bom, ele se manteve bem estável ali na casa do 7,2 a 7,4.''', unsafe_allow_html=True)
+
 
     with tab3:
         st.header("Dashboard Interativo:")
@@ -140,7 +263,7 @@ def render_proposta_analitica():
         fig4.add_hline(y=embu_guacu_2023, line_dash="dash", line_color="red", annotation_text=f'Embu-Guaçu: {embu_guacu_2023}')
 
         # Título geral
-        st.title('IDEB dados dos municipios do estado de São Paulo ')
+        st.markdown('## Índice de Desenvolvimento da Educação Básica (Ideb) é um indicador que mede a qualidade do ensino nas escolas públicas e privadas do Brasil. \n Dados dos municipios do estado de São Paulo ')
         st.markdown(' ### <span style="color: yellow; font-weight: bold;">Ensino infantil final (6º ao 9º ano)</span> dos municípios em comparação com a rede municipal de Embu-Guaçu ', unsafe_allow_html=True)
 
         # Exibe os gráficos no Streamlit em um layout de grid
@@ -154,6 +277,23 @@ def render_proposta_analitica():
             st.plotly_chart(fig3, use_container_width=True)
         with col4:
             st.plotly_chart(fig4, use_container_width=True)
+
+
+        st.markdown('O boxplot apresentado na imagem compara o Índice de Desenvolvimento da Educação Básica (IDEB) dos municípios do estado de São Paulo em diferentes anos (2017, 2019, 2021 e 2023) com o desempenho específico da rede municipal de **Embu-Guaçu**. \n \
+            \
+       \n #### **Análise do Boxplot**  \
+       \n - O **boxplot** exibe a distribuição do IDEB nos municípios. A caixa representa o intervalo interquartil (IQR), ou seja, onde está concentrada a maior parte das notas (do 1º quartil ao 3º quartil), enquanto os pontos fora desse intervalo são **outliers** (valores atípicos).  \
+       \n - A **linha vermelha pontilhada** indica o IDEB de **Embu-Guaçu** para cada ano, permitindo uma comparação direta com os demais municípios.  \
+        	\
+       \n #### **Comparação de Embu-Guaçu com os outros municípios**  \
+       \n 1. **IDEB 2017:** Embu-Guaçu tinha um índice de **4.9**, o que o colocava abaixo da mediana dos municípios paulistas. Isso significa que mais da metade dos municípios teve um desempenho melhor.  \
+       \n 2. **IDEB 2019:** O índice caiu para **4.6**, indicando uma piora no desempenho da rede municipal de Embu-Guaçu. Esse valor está ainda mais abaixo da mediana dos municípios, o que sugere um aumento na defasagem educacional.  \
+       \n 3. **IDEB 2021:** O índice voltou para **4.9**, demonstrando uma leve recuperação, mas ainda abaixo da mediana dos municípios.  \
+       \n 4. **IDEB 2023:** O valor foi **4.7**, um leve declínio em relação a 2021, mantendo-se abaixo da maioria dos municípios.  \
+        \
+          ')
+        
+        st.page_link("https://repositorio.seade.gov.br/dataset/educacao-basica-painel?activity_id=382c0e32-f953-49e9-8d97-f34167978f65", label="Link: fonte dados - Prefeitura de São Paulo")
 
         mask = (df_ideb['rede'] == 'Municipal') & (df_ideb['1_ao_5_ano'] == True)
         df_ideb_infantil_final_municipal = df_ideb[mask]
@@ -178,9 +318,9 @@ def render_proposta_analitica():
 
 
         # Título geral
-        st.title('IDEB dados dos municipios do estado de São Paulo ')
+        st.markdown('## Índice de Desenvolvimento da Educação Básica (Ideb) é um indicador que mede a qualidade do ensino nas escolas públicas e privadas do Brasil. \n dados dos municipios do estado de São Paulo ')
         st.markdown(' ### <span style="color: yellow; font-weight: bold;">Ensino inicial infantil (1° ao 5°ano)</span> dos municípios em comparação com a rede municipal de Embu-Guaçu ',  unsafe_allow_html=True)
-
+        st.page_link("https://repositorio.seade.gov.br/dataset/educacao-basica-painel?activity_id=382c0e32-f953-49e9-8d97-f34167978f65", label="Link: fonte dados - Prefeitura de São Paulo")
         # Exibe os gráficos no Streamlit em um layout de grid
         col1, col2, col3, col4 = st.columns(4)
 
@@ -193,6 +333,13 @@ def render_proposta_analitica():
         with col4:
             st.plotly_chart(fig4, use_container_width=True)
 
+        st.markdown("### **Conclusões** \n \
+        \n- **Embu-Guaçu está consistentemente abaixo da mediana** dos municípios paulistas em todos os anos analisados.  \
+        \n- Houve **queda no IDEB entre 2019 e 2021**, sugerindo desafios no ensino fundamental.  \
+        \n- Apesar de uma **recuperação parcial em 2023**, **indicando dificuldades na manutenção do progresso educacional**.  \
+        \n- Para que Embu-Guaçu melhore no ranking estadual, é necessário implementar **políticas educacionais eficazes**, como reforço escolar, melhoria na infraestrutura e capacitação de professores.  \
+        \
+        \nEste gráfico reflete a importância de investimentos contínuos na educação básica para reduzir a disparidade entre os municípios paulistas.")
         # Título principal
         st.title("Transformando Vidas: O Impacto da ONG Passos Magicos em Embu-Guaçu")
 
