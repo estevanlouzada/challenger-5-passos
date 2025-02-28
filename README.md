@@ -66,3 +66,5 @@ Acreditamos que as informações e insights gerados neste projeto podem contribu
 
 ## 🧑‍💻 Autor
 Estevan Louzada Souza
+Gabriel Ramalho Abahit
+Amanda Beatriz da Silva
